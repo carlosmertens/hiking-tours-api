@@ -1,13 +1,14 @@
 import 'dotenv/config';
 import express from 'express';
-import {Request, Response} from 'express-serve-static-core';
 import {log} from './logs';
+import {startMiddlewares} from './start/middlewares';
+import {startRoutes} from './start/routes';
 
 const app = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send({app: 'Hiking Tours API', message: 'Welcome to Hiking Tours API'});
-});
+startMiddlewares(app);
+
+startRoutes(app);
 
 const port = process.env.PORT || 8081;
 app.listen(port, () => log.server(`Ready on port ${port}`));

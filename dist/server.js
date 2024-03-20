@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const logs_1 = require("./logs");
+const middlewares_1 = require("./start/middlewares");
+const routes_1 = require("./start/routes");
 const app = (0, express_1.default)();
-app.get('/', (req, res) => {
-    res.send({ app: 'Hiking Tours API', message: 'Welcome to Hiking Tours API' });
-});
+(0, middlewares_1.startMiddlewares)(app);
+(0, routes_1.startRoutes)(app);
 const port = process.env.PORT || 8081;
 app.listen(port, () => logs_1.log.server(`Ready on port ${port}`));
