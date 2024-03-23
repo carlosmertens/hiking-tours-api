@@ -75,7 +75,7 @@ function deleteTour(req: Request, res: Response) {
     .send({status: 'success', data: null, message: 'DELETE a tour'});
 }
 
-export const controller = {
+export const controllers = {
   getAllTours,
   createNewTour,
   getTour,

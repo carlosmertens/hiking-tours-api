@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.controller = void 0;
+exports.controllers = void 0;
 const fs = __importStar(require("fs"));
 // TODO: Once app is connected to MongoDB, delete file system data
 const path = '/Users/mertens/Developer/hiking-tours-api';
@@ -67,7 +67,7 @@ function deleteTour(req, res) {
         .status(204)
         .send({ status: 'success', data: null, message: 'DELETE a tour' });
 }
-exports.controller = {
+exports.controllers = {
     getAllTours,
     createNewTour,
     getTour,

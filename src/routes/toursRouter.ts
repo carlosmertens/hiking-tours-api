@@ -1,16 +1,16 @@
-import express from 'express';
-import {controller} from '../controllers/tours';
+import {Router} from 'express';
+import {controllers} from '../controllers/tours';
 
-export const toursRouter = express.Router();
+export const toursRouter = Router();
 
 toursRouter
   .route('/')
-  .get(controller.getAllTours)
-  .post(controller.createNewTour);
+  .get(controllers.getAllTours)
+  .post(controllers.createNewTour);
 
 toursRouter
   .route('/:id')
-  .get(controller.getTour)
-  .put(controller.updateTour)
-  .patch(controller.patchTour)
-  .delete(controller.deleteTour);
+  .get(controllers.getTour)
+  .put(controllers.updateTour)
+  .patch(controllers.patchTour)
+  .delete(controllers.deleteTour);
