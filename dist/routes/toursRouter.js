@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toursRouter = void 0;
 const express_1 = require("express");
 const tours_1 = require("../controllers/tours");
+const validateParam_1 = require("../middlewares/validateParam");
 exports.toursRouter = (0, express_1.Router)();
+exports.toursRouter.param('id', validateParam_1.validateParam);
 exports.toursRouter
     .route('/')
     .get(tours_1.controllers.getAllTours)
