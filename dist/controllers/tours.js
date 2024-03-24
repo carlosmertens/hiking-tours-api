@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.controllers = void 0;
 const fs = __importStar(require("fs"));
 // TODO: Once app is connected to MongoDB, delete file system data
-const path = '/Users/mertens/Developer/hiking-tours-api';
+const path = process.env.PWD;
 const tours = JSON.parse(fs.readFileSync(`${path}/tours-simple.json`, 'utf8'));
 function getAllTours(req, res) {
     res

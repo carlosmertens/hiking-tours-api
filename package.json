@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && npx tsc",
-    "start": "node dist/server.js",
+    "start": "DEBUG= node dist/server.js",
     "dev": "tsc -w & nodemon dist/server.js"
   },
   "engines": {

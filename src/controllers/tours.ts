@@ -19,7 +19,7 @@ interface ITours {
 }
 
 // TODO: Once app is connected to MongoDB, delete file system data
-const path = '/Users/mertens/Developer/hiking-tours-api';
+const path = process.env.PWD;
 const tours: ITours[] = JSON.parse(
   fs.readFileSync(`${path}/tours-simple.json`, 'utf8')
 );
