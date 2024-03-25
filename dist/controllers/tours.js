@@ -1,52 +1,35 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.controllers = void 0;
-const fs = __importStar(require("fs"));
-// TODO: Once app is connected to MongoDB, delete file system data
-const path = process.env.PWD;
-const tours = JSON.parse(fs.readFileSync(`${path}/tours-simple.json`, 'utf8'));
+const Tour_1 = require("../models/Tour");
 function getAllTours(req, res) {
-    res
-        .status(200)
-        .send({ status: 'success', results: tours.length, data: { tours } });
+    return __awaiter(this, void 0, void 0, function* () {
+        /**
+         * Function controller to get all users
+         */
+        const tours = yield Tour_1.TourModel.find();
+        res.status(200).send({
+            status: 'success',
+            result: tours.length,
+            data: { tours },
+            message: 'All tours were requested',
+        });
+    });
 }
 function createNewTour(req, res) {
-    const newId = tours[tours.length - 1].id + 1;
-    const newTour = Object.assign({ id: newId }, req.body);
-    tours.push(newTour);
-    fs.writeFile(`${path}/tours-simple.json`, JSON.stringify(tours), err => console.log(err));
-    res.status(201).send({ status: 'success', data: { tour: newTour } });
+    res.status(201).send({ status: 'success', data: {} });
 }
 function getTour(req, res) {
-    const tour = tours.find(el => el.id === Number(req.params.id));
-    if (!tour)
-        return res
-            .status(404)
-            .send({ status: 'fail', message: 'Tour with given id was not found' });
-    res.send({ status: 'success', data: tour });
+    res.send({ status: 'success', data: {} });
 }
 function updateTour(req, res) {
     res.status(200).send({

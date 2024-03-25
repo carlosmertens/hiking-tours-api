@@ -1,9 +1,18 @@
 import {Request, Response} from 'express';
+import {UserModel} from '../models/User';
 
-function getAllUsers(req: Request, res: Response) {
-  res
-    .status(200)
-    .send({status: 'success', data: {}, message: 'GET request for all users'});
+async function getAllUsers(req: Request, res: Response) {
+  /**
+   * Function controller to get all users
+   */
+  const users = await UserModel.find();
+
+  res.status(200).send({
+    status: 'success',
+    result: users.length,
+    data: users,
+    message: 'All users were requested',
+  });
 }
 
 function createNewUser(req: Request, res: Response) {

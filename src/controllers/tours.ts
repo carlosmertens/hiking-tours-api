@@ -1,56 +1,26 @@
 import {Request, Response} from 'express';
-import * as fs from 'fs';
+import {TourModel} from '../models/Tour';
 
-// TODO: Move interface to own folder
-interface ITours {
-  id: number;
-  name: string;
-  duration: number;
-  maxGroupSize: number;
-  difficulty: string;
-  ratingsAverage: number;
-  ratingsQuantity: number;
-  price: number;
-  summary: string;
-  description: string;
-  imageCover: string;
-  images: string[];
-  startDates: string[];
-}
+async function getAllTours(req: Request, res: Response) {
+  /**
+   * Function controller to get all users
+   */
+  const tours = await TourModel.find();
 
-// TODO: Once app is connected to MongoDB, delete file system data
-const path = process.env.PWD;
-const tours: ITours[] = JSON.parse(
-  fs.readFileSync(`${path}/tours-simple.json`, 'utf8')
-);
-
-function getAllTours(req: Request, res: Response) {
-  res
-    .status(200)
-    .send({status: 'success', results: tours.length, data: {tours}});
+  res.status(200).send({
+    status: 'success',
+    result: tours.length,
+    data: {tours},
+    message: 'All tours were requested',
+  });
 }
 
 function createNewTour(req: Request, res: Response) {
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({id: newId}, req.body);
-
-  tours.push(newTour);
-
-  fs.writeFile(`${path}/tours-simple.json`, JSON.stringify(tours), err =>
-    console.log(err)
-  );
-
-  res.status(201).send({status: 'success', data: {tour: newTour}});
+  res.status(201).send({status: 'success', data: {}});
 }
 
 function getTour(req: Request, res: Response) {
-  const tour = tours.find(el => el.id === Number(req.params.id));
-  if (!tour)
-    return res
-      .status(404)
-      .send({status: 'fail', message: 'Tour with given id was not found'});
-
-  res.send({status: 'success', data: tour});
+  res.send({status: 'success', data: {}});
 }
 
 function updateTour(req: Request, res: Response) {
