@@ -13,9 +13,6 @@ exports.controllers = void 0;
 const Tour_1 = require("../models/Tour");
 function getAllTours(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        /**
-         * Function controller to get all users
-         */
         const tours = yield Tour_1.TourModel.find();
         res.status(200).send({
             status: 'success',
@@ -26,7 +23,20 @@ function getAllTours(req, res) {
     });
 }
 function createNewTour(req, res) {
-    res.status(201).send({ status: 'success', data: {} });
+    return __awaiter(this, void 0, void 0, function* () {
+        // Validate body
+        const { error } = (0, Tour_1.validate)(req.body);
+        if (error)
+            return res.status(400).send({ status: 'fail', message: error.message });
+        // Create tour
+        const tour = yield Tour_1.TourModel.create(req.body);
+        // Response status and new tour created
+        res.status(201).send({
+            status: 'success',
+            data: tour,
+            message: 'New tour has been created',
+        });
+    });
 }
 function getTour(req, res) {
     res.send({ status: 'success', data: {} });

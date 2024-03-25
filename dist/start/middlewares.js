@@ -9,6 +9,7 @@ const logger_1 = require("../middlewares/logger");
 function startMiddlewares(app) {
     const path = process.env.PWD;
     app.use(express_1.default.json());
+    app.use(express_1.default.urlencoded({ extended: true }));
     app.use(logger_1.logger);
     app.use(express_1.default.static(`${path}/public`));
 }

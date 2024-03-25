@@ -1,10 +1,8 @@
 import {Request, Response} from 'express';
-import {TourModel} from '../models/Tour';
+import {TourModel, validate} from '../models/Tour';
+import {ITour} from '../interfaces';
 
 async function getAllTours(req: Request, res: Response) {
-  /**
-   * Function controller to get all users
-   */
   const tours = await TourModel.find();
 
   res.status(200).send({
@@ -15,8 +13,21 @@ async function getAllTours(req: Request, res: Response) {
   });
 }
 
-function createNewTour(req: Request, res: Response) {
-  res.status(201).send({status: 'success', data: {}});
+async function createNewTour(req: Request<{}, {}, ITour>, res: Response) {
+  // Validate body
+  const {error} = validate(req.body);
+  if (error)
+    return res.status(400).send({status: 'fail', message: error.message});
+
+  // Create tour
+  const tour = await TourModel.create(req.body);
+
+  // Response status and new tour created
+  res.status(201).send({
+    status: 'success',
+    data: tour,
+    message: 'New tour has been created',
+  });
 }
 
 function getTour(req: Request, res: Response) {

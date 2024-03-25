@@ -8,7 +8,7 @@ export function startDB() {
    */
 
   mongoose
-    .connect(process.env.ATLAS_URI as string)
+    .connect(process.env.COMPASS_URI as string)
     .then(() => log.db('MongoDB connected'))
     .catch(error => log.error(error));
 }
