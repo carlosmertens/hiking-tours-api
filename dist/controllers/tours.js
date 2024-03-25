@@ -20,7 +20,7 @@ function getAllTours(req, res) {
         res.status(200).send({
             status: 'success',
             result: tours.length,
-            data: { tours },
+            data: tours,
             message: 'All tours were requested',
         });
     });

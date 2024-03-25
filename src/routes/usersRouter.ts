@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import {asyncRequest} from '../middlewares/asyncRequest';
 import {controllers} from '../controllers/users';
 import {validateParam} from '../middlewares/validateParam';
 
@@ -8,7 +9,7 @@ usersRouter.param('id', validateParam);
 
 usersRouter
   .route('/')
-  .get(controllers.getAllUsers)
+  .get(asyncRequest(controllers.getAllUsers))
   .post(controllers.createNewUser);
 
 usersRouter

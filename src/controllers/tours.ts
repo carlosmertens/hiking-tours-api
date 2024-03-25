@@ -10,7 +10,7 @@ async function getAllTours(req: Request, res: Response) {
   res.status(200).send({
     status: 'success',
     result: tours.length,
-    data: {tours},
+    data: tours,
     message: 'All tours were requested',
   });
 }

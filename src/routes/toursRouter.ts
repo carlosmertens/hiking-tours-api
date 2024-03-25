@@ -1,25 +1,17 @@
-import {RequestHandler, Router} from 'express';
+import {Router} from 'express';
+import {asyncRequest} from '../middlewares/asyncRequest';
 import {controllers} from '../controllers/tours';
-import {validateParam} from '../middlewares/validateParam';
+// import {validateParam} from '../middlewares/validateParam';
 
 export const toursRouter = Router();
 
-toursRouter.param('id', validateParam);
-
-// TODO: Refactor with joi validation
-const validateBodyReq: RequestHandler = (req, res, next) => {
-  if (!req.body.name)
-    return res
-      .status(400)
-      .send({status: 'fail', data: {}, message: 'Name is required'});
-
-  next();
-};
+// TODO: Delete validateParam middleware function
+// toursRouter.param('id', validateParam);
 
 toursRouter
   .route('/')
-  .get(controllers.getAllTours)
-  .post(validateBodyReq, controllers.createNewTour);
+  .get(asyncRequest(controllers.getAllTours))
+  .post(controllers.createNewTour);
 
 toursRouter
   .route('/:id')
