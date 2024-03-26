@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.controllers = void 0;
+exports.controllers = exports.tourNotFound = void 0;
 const Tour_1 = require("../models/Tour");
 function getAllTours(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -39,7 +39,26 @@ function createNewTour(req, res) {
     });
 }
 function getTour(req, res) {
-    res.send({ status: 'success', data: {} });
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const tour = yield Tour_1.TourModel.findById(req.params.id);
+            res.status(200).send({
+                status: 'success',
+                data: tour,
+                message: 'GET request for one tour with id',
+            });
+        }
+        catch (error) {
+            res
+                .status(404)
+                .send({
+                status: 'fail',
+                data: null,
+                message: 'Something went wrong, please check the id',
+                error: error.message,
+            });
+        }
+    });
 }
 function updateTour(req, res) {
     res.status(200).send({
@@ -60,6 +79,18 @@ function deleteTour(req, res) {
         .status(204)
         .send({ status: 'success', data: null, message: 'DELETE a tour' });
 }
+/////////////////////////////
+// TABNINE TEST
+// TODO: Delete test function below
+/**
+ * Returns a 404 response when a tour is not found.
+ * @param req The request object.
+ * @param res The response object.
+ */
+function tourNotFound(req, res) {
+    res.status(404).send({ status: 'fail', message: 'Tour not found' });
+}
+exports.tourNotFound = tourNotFound;
 exports.controllers = {
     getAllTours,
     createNewTour,

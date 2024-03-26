@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import {Request, Response} from 'express-serve-static-core';
 import {TourModel, validate} from '../models/Tour';
 import {ITour} from '../interfaces';
 
@@ -30,8 +30,25 @@ async function createNewTour(req: Request<{}, {}, ITour>, res: Response) {
   });
 }
 
-function getTour(req: Request, res: Response) {
-  res.send({status: 'success', data: {}});
+async function getTour(req: Request, res: Response) {
+  try {
+    const tour = await TourModel.findById(req.params.id);
+
+    res.status(200).send({
+      status: 'success',
+      data: tour,
+      message: 'GET request for one tour with id',
+    });
+  } catch (error: any) {
+    res
+      .status(404)
+      .send({
+        status: 'fail',
+        data: null,
+        message: 'Something went wrong, please check the id',
+        error: error.message,
+      });
+  }
 }
 
 function updateTour(req: Request, res: Response) {
@@ -54,6 +71,19 @@ function deleteTour(req: Request, res: Response) {
   res
     .status(204)
     .send({status: 'success', data: null, message: 'DELETE a tour'});
+}
+
+/////////////////////////////
+// TABNINE TEST
+// TODO: Delete test function below
+
+/**
+ * Returns a 404 response when a tour is not found.
+ * @param req The request object.
+ * @param res The response object.
+ */
+export function tourNotFound(req: Request, res: Response) {
+  res.status(404).send({status: 'fail', message: 'Tour not found'});
 }
 
 export const controllers = {

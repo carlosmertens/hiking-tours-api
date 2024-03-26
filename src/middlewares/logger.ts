@@ -1,4 +1,4 @@
-import {RequestHandler} from 'express';
+import {RequestHandler} from 'express-serve-static-core';
 import {log} from '../logs';
 
 export const logger: RequestHandler = (req, res, next) => {

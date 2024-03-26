@@ -11,11 +11,11 @@ export const toursRouter = Router();
 toursRouter
   .route('/')
   .get(asyncRequest(controllers.getAllTours))
-  .post(controllers.createNewTour);
+  .post(asyncRequest(controllers.createNewTour));
 
 toursRouter
   .route('/:id')
-  .get(controllers.getTour)
-  .put(controllers.updateTour)
-  .patch(controllers.patchTour)
-  .delete(controllers.deleteTour);
+  .get(asyncRequest(controllers.getTour))
+  .put(asyncRequest(controllers.updateTour))
+  .patch(asyncRequest(controllers.patchTour))
+  .delete(asyncRequest(controllers.deleteTour));

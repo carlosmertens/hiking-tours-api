@@ -10,11 +10,11 @@ usersRouter.param('id', validateParam);
 usersRouter
   .route('/')
   .get(asyncRequest(controllers.getAllUsers))
-  .post(controllers.createNewUser);
+  .post(asyncRequest(controllers.createNewUser));
 
 usersRouter
   .route('/:id')
-  .get(controllers.getUser)
-  .put(controllers.updateUser)
-  .patch(controllers.patchUser)
-  .delete(controllers.deleteUser);
+  .get(asyncRequest(controllers.getUser))
+  .put(asyncRequest(controllers.updateUser))
+  .patch(asyncRequest(controllers.patchUser))
+  .delete(asyncRequest(controllers.deleteUser));

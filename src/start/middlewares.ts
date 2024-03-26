@@ -1,4 +1,5 @@
-import express, {Express} from 'express';
+import express from 'express';
+import {Express} from 'express-serve-static-core';
 import {logger} from '../middlewares/logger';
 
 export function startMiddlewares(app: Express) {

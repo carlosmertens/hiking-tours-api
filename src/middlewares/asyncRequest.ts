@@ -1,4 +1,9 @@
-import {RequestHandler, Request, Response, NextFunction} from 'express';
+import {
+  RequestHandler,
+  Request,
+  Response,
+  NextFunction,
+} from 'express-serve-static-core';
 import {log} from '../logs';
 
 export function asyncRequest(ctr: RequestHandler) {

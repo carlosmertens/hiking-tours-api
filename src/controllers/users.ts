@@ -1,11 +1,9 @@
-import {Request, Response} from 'express';
+import {Request, Response} from 'express-serve-static-core';
 import {UserModel, validate} from '../models/User';
 import {IUser} from '../interfaces';
+import {CastError, Error} from 'mongoose';
 
 async function getAllUsers(req: Request, res: Response) {
-  /**
-   * Function controller to get all users
-   */
   const users = await UserModel.find();
 
   res.status(200).send({
@@ -17,15 +15,12 @@ async function getAllUsers(req: Request, res: Response) {
 }
 
 function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
-  // Validate body
   const {error} = validate(req.body);
   if (error)
     return res.status(400).send({status: 'fail', message: error.message});
 
-  // Create user
   const user = UserModel.create(req.body);
 
-  // Respnse status and new user created
   res.status(201).send({
     status: 'success',
     data: user,
@@ -33,15 +28,28 @@ function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
   });
 }
 
-function getUser(req: Request, res: Response) {
-  res.status(200).send({
-    status: 'success',
-    data: {},
-    message: 'GET request for one user with id',
-  });
+async function getUser(req: Request, res: Response) {
+  try {
+    const user = await UserModel.findById(req.params.id);
+
+    res.status(200).send({
+      status: 'success',
+      data: user,
+      message: 'GET request for one user with id',
+    });
+  } catch (error: any) {
+    res
+      .status(404)
+      .send({
+        status: 'fail',
+        data: null,
+        message: 'Something went wrong, please check the id',
+        error: error.message,
+      });
+  }
 }
 
-function updateUser(req: Request, res: Response) {
+async function updateUser(req: Request, res: Response) {
   res.status(200).send({
     status: 'success',
     data: {},
@@ -49,7 +57,7 @@ function updateUser(req: Request, res: Response) {
   });
 }
 
-function patchUser(req: Request, res: Response) {
+async function patchUser(req: Request, res: Response) {
   res.status(200).send({
     status: 'success',
     data: {},
@@ -57,7 +65,7 @@ function patchUser(req: Request, res: Response) {
   });
 }
 
-function deleteUser(req: Request, res: Response) {
+async function deleteUser(req: Request, res: Response) {
   res.status(200).send({
     status: 'success',
     data: {},

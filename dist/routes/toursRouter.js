@@ -11,10 +11,10 @@ exports.toursRouter = (0, express_1.Router)();
 exports.toursRouter
     .route('/')
     .get((0, asyncRequest_1.asyncRequest)(tours_1.controllers.getAllTours))
-    .post(tours_1.controllers.createNewTour);
+    .post((0, asyncRequest_1.asyncRequest)(tours_1.controllers.createNewTour));
 exports.toursRouter
     .route('/:id')
-    .get(tours_1.controllers.getTour)
-    .put(tours_1.controllers.updateTour)
-    .patch(tours_1.controllers.patchTour)
-    .delete(tours_1.controllers.deleteTour);
+    .get((0, asyncRequest_1.asyncRequest)(tours_1.controllers.getTour))
+    .put((0, asyncRequest_1.asyncRequest)(tours_1.controllers.updateTour))
+    .patch((0, asyncRequest_1.asyncRequest)(tours_1.controllers.patchTour))
+    .delete((0, asyncRequest_1.asyncRequest)(tours_1.controllers.deleteTour));
