@@ -12,5 +12,8 @@ declare global {
         _id: string;
       };
     }
+    interface ParamsDictionary {
+      id: string;
+    }
   }
 }

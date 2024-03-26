@@ -1,8 +1,13 @@
 import {Request, Response} from 'express-serve-static-core';
 import {UserModel, validate} from '../models/User';
 import {IUser} from '../interfaces';
-import {CastError, Error} from 'mongoose';
 
+/**
+ * Returns a list of all users in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 async function getAllUsers(req: Request, res: Response) {
   const users = await UserModel.find();
 
@@ -14,12 +19,18 @@ async function getAllUsers(req: Request, res: Response) {
   });
 }
 
-function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
+/**
+ * Creates a new user in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+async function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
   const {error} = validate(req.body);
   if (error)
     return res.status(400).send({status: 'fail', message: error.message});
 
-  const user = UserModel.create(req.body);
+  const user = await UserModel.create(req.body);
 
   res.status(201).send({
     status: 'success',
@@ -28,48 +39,57 @@ function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
   });
 }
 
+/**
+ * Returns a single user by their ID.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 async function getUser(req: Request, res: Response) {
-  try {
-    const user = await UserModel.findById(req.params.id);
+  const user = await UserModel.findById(req.params.id);
 
-    res.status(200).send({
-      status: 'success',
-      data: user,
-      message: 'GET request for one user with id',
-    });
-  } catch (error: any) {
-    res
-      .status(404)
-      .send({
-        status: 'fail',
-        data: null,
-        message: 'Something went wrong, please check the id',
-        error: error.message,
-      });
-  }
+  res.status(200).send({
+    status: 'success',
+    data: user,
+    message: 'A user has been requested',
+  });
 }
 
 async function updateUser(req: Request, res: Response) {
+  const {error} = validate(req.body);
+  if (error)
+    return res.status(400).send({status: 'fail', message: error.message});
+
+  const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
   res.status(200).send({
     status: 'success',
-    data: {},
-    message: 'PUT request to update user by id',
+    data: user,
+    message: 'User has been updated',
   });
 }
 
 async function patchUser(req: Request, res: Response) {
+  const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
   res.status(200).send({
     status: 'success',
-    data: {},
-    message: "PATCH request to update user's properties",
+    data: user,
+    message: 'User property has been modified',
   });
 }
 
 async function deleteUser(req: Request, res: Response) {
+  const user = await UserModel.findByIdAndDelete(req.params.id);
+
   res.status(200).send({
     status: 'success',
-    data: {},
-    message: 'DELETE request to remove user by id',
+    data: user,
+    message: 'A user has been deleted',
   });
 }
 

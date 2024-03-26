@@ -9,8 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.controllers = exports.tourNotFound = void 0;
+exports.controllers = void 0;
 const Tour_1 = require("../models/Tour");
+/**
+ * Returns a list of all tours in the database.
+ *
+ * @param req The request object.
+ * @param res The response object.
+ */
 function getAllTours(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const tours = yield Tour_1.TourModel.find();
@@ -22,15 +28,18 @@ function getAllTours(req, res) {
         });
     });
 }
+/**
+ * Creates a new tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 function createNewTour(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Validate body
         const { error } = (0, Tour_1.validate)(req.body);
         if (error)
             return res.status(400).send({ status: 'fail', message: error.message });
-        // Create tour
         const tour = yield Tour_1.TourModel.create(req.body);
-        // Response status and new tour created
         res.status(201).send({
             status: 'success',
             data: tour,
@@ -38,59 +47,81 @@ function createNewTour(req, res) {
         });
     });
 }
+/**
+ * Returns a tour document when a valid tour ID is provided.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 function getTour(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const tour = yield Tour_1.TourModel.findById(req.params.id);
-            res.status(200).send({
-                status: 'success',
-                data: tour,
-                message: 'GET request for one tour with id',
-            });
-        }
-        catch (error) {
-            res
-                .status(404)
-                .send({
-                status: 'fail',
-                data: null,
-                message: 'Something went wrong, please check the id',
-                error: error.message,
-            });
-        }
+        const tour = yield Tour_1.TourModel.findById(req.params.id);
+        res.status(200).send({
+            status: 'success',
+            data: tour,
+            message: 'GET request for one tour with id',
+        });
     });
 }
-function updateTour(req, res) {
-    res.status(200).send({
-        status: 'success',
-        data: '<tour updated>',
-        message: 'PUT request to update a tour',
-    });
-}
-function patchTour(req, res) {
-    res.status(200).send({
-        status: 'success',
-        data: '<tour patch>',
-        message: 'PATCH request to modify a property of a tour',
-    });
-}
-function deleteTour(req, res) {
-    res
-        .status(204)
-        .send({ status: 'success', data: null, message: 'DELETE a tour' });
-}
-/////////////////////////////
-// TABNINE TEST
-// TODO: Delete test function below
 /**
- * Returns a 404 response when a tour is not found.
- * @param req The request object.
- * @param res The response object.
+ * Updates a tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
  */
-function tourNotFound(req, res) {
-    res.status(404).send({ status: 'fail', message: 'Tour not found' });
+function updateTour(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { error } = (0, Tour_1.validate)(req.body);
+        if (error)
+            return res.status(400).send({ status: 'fail', message: error.message });
+        const tour = yield Tour_1.TourModel.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.status(200).send({
+            status: 'success',
+            data: tour,
+            message: 'PUT request to update a tour',
+        });
+    });
 }
-exports.tourNotFound = tourNotFound;
+/**
+ * Updates a tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+function patchTour(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { error } = (0, Tour_1.validate)(req.body);
+        if (error) {
+            return res.status(400).send({ status: 'fail', message: error.message });
+        }
+        const tour = yield Tour_1.TourModel.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.status(200).send({
+            status: 'success',
+            data: tour,
+            message: 'PATCH request to modify a property of a tour',
+        });
+    });
+}
+/**
+ * Deletes a tour from the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+function deleteTour(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const tour = yield Tour_1.TourModel.findByIdAndDelete(req.params.id);
+        res.status(200).send({
+            status: 'success',
+            data: tour,
+            message: `Tour ${req.params.id} has been deleted`,
+        });
+    });
+}
 exports.controllers = {
     getAllTours,
     createNewTour,

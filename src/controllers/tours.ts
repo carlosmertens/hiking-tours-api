@@ -2,6 +2,12 @@ import {Request, Response} from 'express-serve-static-core';
 import {TourModel, validate} from '../models/Tour';
 import {ITour} from '../interfaces';
 
+/**
+ * Returns a list of all tours in the database.
+ *
+ * @param req The request object.
+ * @param res The response object.
+ */
 async function getAllTours(req: Request, res: Response) {
   const tours = await TourModel.find();
 
@@ -13,16 +19,19 @@ async function getAllTours(req: Request, res: Response) {
   });
 }
 
+/**
+ * Creates a new tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 async function createNewTour(req: Request<{}, {}, ITour>, res: Response) {
-  // Validate body
   const {error} = validate(req.body);
   if (error)
     return res.status(400).send({status: 'fail', message: error.message});
 
-  // Create tour
   const tour = await TourModel.create(req.body);
 
-  // Response status and new tour created
   res.status(201).send({
     status: 'success',
     data: tour,
@@ -30,60 +39,81 @@ async function createNewTour(req: Request<{}, {}, ITour>, res: Response) {
   });
 }
 
+/**
+ * Returns a tour document when a valid tour ID is provided.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 async function getTour(req: Request, res: Response) {
-  try {
-    const tour = await TourModel.findById(req.params.id);
+  const tour = await TourModel.findById(req.params.id);
 
-    res.status(200).send({
-      status: 'success',
-      data: tour,
-      message: 'GET request for one tour with id',
-    });
-  } catch (error: any) {
-    res
-      .status(404)
-      .send({
-        status: 'fail',
-        data: null,
-        message: 'Something went wrong, please check the id',
-        error: error.message,
-      });
-  }
-}
-
-function updateTour(req: Request, res: Response) {
   res.status(200).send({
     status: 'success',
-    data: '<tour updated>',
+    data: tour,
+    message: 'GET request for one tour with id',
+  });
+}
+
+/**
+ * Updates a tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+async function updateTour(req: Request, res: Response) {
+  const {error} = validate(req.body);
+  if (error)
+    return res.status(400).send({status: 'fail', message: error.message});
+
+  const tour = await TourModel.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
+  res.status(200).send({
+    status: 'success',
+    data: tour,
     message: 'PUT request to update a tour',
   });
 }
 
-function patchTour(req: Request, res: Response) {
+/**
+ * Updates a tour in the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ */
+async function patchTour(req: Request, res: Response) {
+  const {error} = validate(req.body);
+  if (error) {
+    return res.status(400).send({status: 'fail', message: error.message});
+  }
+
+  const tour = await TourModel.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
   res.status(200).send({
     status: 'success',
-    data: '<tour patch>',
+    data: tour,
     message: 'PATCH request to modify a property of a tour',
   });
 }
 
-function deleteTour(req: Request, res: Response) {
-  res
-    .status(204)
-    .send({status: 'success', data: null, message: 'DELETE a tour'});
-}
-
-/////////////////////////////
-// TABNINE TEST
-// TODO: Delete test function below
-
 /**
- * Returns a 404 response when a tour is not found.
- * @param req The request object.
- * @param res The response object.
+ * Deletes a tour from the database.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
  */
-export function tourNotFound(req: Request, res: Response) {
-  res.status(404).send({status: 'fail', message: 'Tour not found'});
+async function deleteTour(req: Request, res: Response) {
+  const tour = await TourModel.findByIdAndDelete(req.params.id);
+
+  res.status(200).send({
+    status: 'success',
+    data: tour,
+    message: `Tour ${req.params.id} has been deleted`,
+  });
 }
 
 export const controllers = {

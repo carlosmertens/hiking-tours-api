@@ -1,20 +1,20 @@
 import {Router} from 'express';
-import {asyncRequest} from '../middlewares/asyncRequest';
+import {asyncWrapper} from '../middlewares/asyncWrapper';
 import {controllers} from '../controllers/users';
-import {validateParam} from '../middlewares/validateParam';
+// import {validateParam} from '../middlewares/validateParam';
 
 export const usersRouter = Router();
 
-usersRouter.param('id', validateParam);
+// usersRouter.param('id', validateParam);
 
 usersRouter
   .route('/')
-  .get(asyncRequest(controllers.getAllUsers))
-  .post(asyncRequest(controllers.createNewUser));
+  .get(asyncWrapper(controllers.getAllUsers))
+  .post(asyncWrapper(controllers.createNewUser));
 
 usersRouter
   .route('/:id')
-  .get(asyncRequest(controllers.getUser))
-  .put(asyncRequest(controllers.updateUser))
-  .patch(asyncRequest(controllers.patchUser))
-  .delete(asyncRequest(controllers.deleteUser));
+  .get(asyncWrapper(controllers.getUser))
+  .put(asyncWrapper(controllers.updateUser))
+  .patch(asyncWrapper(controllers.patchUser))
+  .delete(asyncWrapper(controllers.deleteUser));

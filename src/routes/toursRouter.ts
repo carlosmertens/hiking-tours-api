@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {asyncRequest} from '../middlewares/asyncRequest';
+import {asyncWrapper} from '../middlewares/asyncWrapper';
 import {controllers} from '../controllers/tours';
 // import {validateParam} from '../middlewares/validateParam';
 
@@ -10,12 +10,12 @@ export const toursRouter = Router();
 
 toursRouter
   .route('/')
-  .get(asyncRequest(controllers.getAllTours))
-  .post(asyncRequest(controllers.createNewTour));
+  .get(asyncWrapper(controllers.getAllTours))
+  .post(asyncWrapper(controllers.createNewTour));
 
 toursRouter
   .route('/:id')
-  .get(asyncRequest(controllers.getTour))
-  .put(asyncRequest(controllers.updateTour))
-  .patch(asyncRequest(controllers.patchTour))
-  .delete(asyncRequest(controllers.deleteTour));
+  .get(asyncWrapper(controllers.getTour))
+  .put(asyncWrapper(controllers.updateTour))
+  .patch(asyncWrapper(controllers.patchTour))
+  .delete(asyncWrapper(controllers.deleteTour));
