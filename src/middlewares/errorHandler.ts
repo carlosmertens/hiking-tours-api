@@ -6,13 +6,11 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err.name === 'CastError') {
     return res.status(400).send({
       status: 'error',
-      data: null,
       message: `Invalid ${err.path}: ${err.value}`,
     });
   } else {
     res.status(500).send({
       status: 'error',
-      data: null,
       message: 'Error Handler: Something went wrong',
     });
   }

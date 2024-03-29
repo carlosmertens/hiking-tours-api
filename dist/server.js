@@ -9,23 +9,6 @@ const logs_1 = require("./logs");
 const db_1 = require("./start/db");
 const middlewares_1 = require("./start/middlewares");
 const routes_1 = require("./start/routes");
-// console.log(`${__dirname}/../../public`);
-// console.log(process.env);
-// console.log(process.env.PWD);
-// import {TourModel, validate} from './models/Tour';
-// console.log(TourModel.find());
-// const x = {
-//   name: 'The test of the year',
-//   price: 500,
-//   rating: 70,
-// };
-// const validX = validate(x);
-// console.log(validX.error);
-// const testTour = new TourModel(x);
-// testTour
-//   .save()
-//   .then(x => console.log(x))
-//   .catch(err => console.log(err.message));
 const app = (0, express_1.default)();
 (0, db_1.startDB)();
 (0, middlewares_1.startMiddlewares)(app);

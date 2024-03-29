@@ -48,6 +48,9 @@ async function createNewTour(req: Request<{}, {}, ITour>, res: Response) {
 async function getTour(req: Request, res: Response) {
   const tour = await TourModel.findById(req.params.id);
 
+  if (!tour)
+    return res.status(404).send({status: 'fail', message: 'Tour not found'});
+
   res.status(200).send({
     status: 'success',
     data: tour,
@@ -69,6 +72,9 @@ async function updateTour(req: Request, res: Response) {
   const tour = await TourModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
+
+  if (!tour)
+    return res.status(404).send({status: 'fail', message: 'Tour not found'});
 
   res.status(200).send({
     status: 'success',
@@ -93,6 +99,9 @@ async function patchTour(req: Request, res: Response) {
     new: true,
   });
 
+  if (!tour)
+    return res.status(404).send({status: 'fail', message: 'Tour not found'});
+
   res.status(200).send({
     status: 'success',
     data: tour,
@@ -108,6 +117,9 @@ async function patchTour(req: Request, res: Response) {
  */
 async function deleteTour(req: Request, res: Response) {
   const tour = await TourModel.findByIdAndDelete(req.params.id);
+
+  if (!tour)
+    return res.status(404).send({status: 'fail', message: 'Tour not found'});
 
   res.status(200).send({
     status: 'success',

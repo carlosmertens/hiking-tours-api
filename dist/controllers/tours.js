@@ -56,6 +56,8 @@ function createNewTour(req, res) {
 function getTour(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const tour = yield Tour_1.TourModel.findById(req.params.id);
+        if (!tour)
+            return res.status(404).send({ status: 'fail', message: 'Tour not found' });
         res.status(200).send({
             status: 'success',
             data: tour,
@@ -77,6 +79,8 @@ function updateTour(req, res) {
         const tour = yield Tour_1.TourModel.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         });
+        if (!tour)
+            return res.status(404).send({ status: 'fail', message: 'Tour not found' });
         res.status(200).send({
             status: 'success',
             data: tour,
@@ -99,6 +103,8 @@ function patchTour(req, res) {
         const tour = yield Tour_1.TourModel.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         });
+        if (!tour)
+            return res.status(404).send({ status: 'fail', message: 'Tour not found' });
         res.status(200).send({
             status: 'success',
             data: tour,
@@ -115,6 +121,8 @@ function patchTour(req, res) {
 function deleteTour(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const tour = yield Tour_1.TourModel.findByIdAndDelete(req.params.id);
+        if (!tour)
+            return res.status(404).send({ status: 'fail', message: 'Tour not found' });
         res.status(200).send({
             status: 'success',
             data: tour,

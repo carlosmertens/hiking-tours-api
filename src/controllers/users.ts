@@ -48,6 +48,9 @@ async function createNewUser(req: Request<{}, {}, IUser>, res: Response) {
 async function getUser(req: Request, res: Response) {
   const user = await UserModel.findById(req.params.id);
 
+  if (!user)
+    return res.status(404).send({status: 'fail', message: 'User not found'});
+
   res.status(200).send({
     status: 'success',
     data: user,
@@ -64,6 +67,9 @@ async function updateUser(req: Request, res: Response) {
     new: true,
   });
 
+  if (!user)
+    return res.status(404).send({status: 'fail', message: 'User not found'});
+
   res.status(200).send({
     status: 'success',
     data: user,
@@ -76,6 +82,9 @@ async function patchUser(req: Request, res: Response) {
     new: true,
   });
 
+  if (!user)
+    return res.status(404).send({status: 'fail', message: 'User not found'});
+
   res.status(200).send({
     status: 'success',
     data: user,
@@ -85,6 +94,9 @@ async function patchUser(req: Request, res: Response) {
 
 async function deleteUser(req: Request, res: Response) {
   const user = await UserModel.findByIdAndDelete(req.params.id);
+
+  if (!user)
+    return res.status(404).send({status: 'fail', message: 'User not found'});
 
   res.status(200).send({
     status: 'success',
