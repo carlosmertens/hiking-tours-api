@@ -19,7 +19,24 @@ const Tour_1 = require("../models/Tour");
  */
 function getAllTours(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const tours = yield Tour_1.TourModel.find();
+        // Simple filtering
+        const queryObj = Object.assign({}, req.query);
+        const excludedField = ['page', 'sort', 'limit', 'fields'];
+        excludedField.forEach(field => delete queryObj[field]);
+        // Advance filtering
+        let queryStr = JSON.stringify(queryObj);
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+        // Find filtered query
+        let query = Tour_1.TourModel.find(JSON.parse(queryStr));
+        // Sorting query
+        if (req.query.sort) {
+            const sort = req.query.sort;
+            if (typeof sort === 'string')
+                query = query.sort(sort.split(',').join(' '));
+            else
+                query = query.sort('-createdAt');
+        }
+        const tours = yield query;
         res.status(200).send({
             status: 'success',
             result: tours.length,

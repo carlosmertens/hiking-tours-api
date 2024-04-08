@@ -16,4 +16,14 @@ declare global {
       id: string;
     }
   }
+
+  namespace NodeJS {
+    interface ProcessEnv {
+      DEBUG: string;
+      PORT: string;
+      ATLAS_URI: string;
+      COMPASS_URI: string;
+      JWT_SECRET_KEY: string;
+    }
+  }
 }
